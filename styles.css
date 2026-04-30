@@ -1,0 +1,370 @@
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Fondo de sala de cine igual al de la cartelera */
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), 
+                url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* Opcional: añade un desenfoque sutil al fondo si quieres que el modal resalte más */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: inherit;
+    filter: blur(5px);
+    z-index: -1;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #e50914;
+    margin-bottom: 30px;
+}
+
+/* Busca esta parte en tu CSS y reemplázala */
+.grid { 
+    display: grid; 
+    /* Definimos exactamente 5 columnas de 220px cada una */
+    grid-template-columns: repeat(5, 220px); 
+    gap: 25px; 
+    max-width: 1200px; 
+    margin: 0 auto;
+    
+    /* Centra todo el bloque de 5 columnas en la pantalla */
+    justify-content: center; 
+}
+
+/* Tarjeta con efecto de elevación */
+.card { 
+    background: #1e1e1e; 
+    padding: 0; 
+    border-radius: 12px; 
+    text-align: center; 
+    overflow: hidden; 
+    border: 1px solid #2a2a2a;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    /* INTEGRADO: Convierte la tarjeta en un contenedor flexible vertical */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card:hover {
+    transform: translateY(-10px); 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    border-color: #e50914;
+}
+
+/* Ajuste de imagen */
+.card img { 
+    width: 100%; 
+    height: 320px; 
+    object-fit: cover; 
+    display: block;
+}
+
+/* Contenedor de texto dentro de la tarjeta */
+.card-content {
+    padding: 15px;
+    
+    /* INTEGRADO: Crece para empujar el botón hacia abajo */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.card h3 {
+    margin: 10px 0 5px 0;
+    font-size: 1.1rem;
+}
+
+/* Botón con mejor interacción */
+button { 
+    background: #e50914; 
+    color: white; 
+    border: none; 
+    padding: 12px; 
+    cursor: pointer; 
+    width: 80%; 
+    border-radius: 8px; 
+    font-weight: bold;
+    transition: background 0.2s;
+
+    /* INTEGRADO: Margen auto arriba para alinearse al fondo */
+    margin: auto auto 20px auto; 
+}
+
+button:hover {
+    background: #f40612;
+    transform: scale(1.05);
+}
+
+/* Fondo oscuro del modal */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.8);
+}
+
+/* Caja blanca/oscura central */
+.modal-content {
+    background-color: #1e1e1e;
+    margin: 10% auto;
+    padding: 25px;
+    border: 1px solid #e50914;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 15px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 20px; top: 10px;
+    color: #aaa;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.grid-horarios {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.hora-item {
+    background: #e50914;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* Botones de horario simples */
+.btn-horario {
+    background: #ff0000;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    margin: 10px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-horario:hover {
+    background: #b30000;
+    transform: scale(1.05);
+}
+
+/* Mapa de asientos */
+.mapa-asientos {
+    display: grid;
+    grid-template-columns: repeat(2, 60px);
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.asiento {
+    width: 50px;
+    height: 50px;
+    background: #444;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.asiento.seleccionado {
+    background: #ff0000;
+    box-shadow: 0 0 10px #ff0000;
+}
+
+.btn-comprar {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Estilo mejorado para el contenedor principal */
+.pago-container {
+    max-width: 500px;
+    width: 95%;
+    padding: 30px;
+    background: rgba(26, 26, 26, 0.9); /* Oscuro con ligera transparencia */
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+    backdrop-filter: blur(15px); /* Efecto cristal */
+    -webkit-backdrop-filter: blur(15px);
+}
+
+/* El Resumen como un Ticket Real */
+.resumen-compra {
+    background: #ffffff; /* Fondo claro para resaltar como papel */
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    position: relative;
+    color: #111; /* Texto oscuro para contraste */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Línea perforada (Troquelado) */
+.resumen-compra::after {
+    content: "";
+    position: absolute;
+    bottom: 45px;
+    left: 0;
+    right: 0;
+    border-bottom: 2px dashed #ccc;
+}
+
+/* Círculos laterales del ticket */
+.resumen-compra::before, .resumen-compra .derecha {
+    content: "";
+    position: absolute;
+    bottom: 35px;
+    width: 24px;
+    height: 24px;
+    background: #1a1a1a; /* Debe ser igual al color del .pago-container */
+    border-radius: 50%;
+    z-index: 2;
+}
+
+.resumen-compra::before { left: -12px; }
+.resumen-compra .derecha { right: -12px; }
+
+.resumen-compra .derecha {
+    position: absolute;
+    bottom: 35px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    background: #1a1a1a;
+    border-radius: 50%;
+}
+
+/* Contenedor de opciones de pago */
+.metodos-pago {
+    display: grid;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.opcion-pago {
+    background: #252525;
+    padding: 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.95rem;
+    color: #eee;
+}
+
+/* Efecto al pasar el mouse */
+.opcion-pago:hover {
+    border-color: #e50914;
+    transform: translateY(-2px);
+    background: #2a2a2a;
+}
+
+/* Clase para cuando se selecciona una opción (puedes activarla con JS) */
+.opcion-pago.active {
+    border-color: #28a745;
+    background: rgba(40, 167, 69, 0.1);
+}
+
+.resumen-compra h3 {
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    color: #111;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-top: 0;
+    letter-spacing: 1px;
+}
+
+.resumen-compra p {
+    font-family: 'Courier New', Courier, monospace;
+    margin: 10px 0;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* El precio final resaltado */
+#total-resaltado {
+    font-size: 1.5rem;
+    display: block;
+    text-align: center;
+    margin-top: 25px;
+    color: #000;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.btn-pagar {
+    width: 100%;
+    padding: 18px;
+    background: #28a745; /* Verde éxito */
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    text-transform: uppercase;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.btn-pagar:hover {
+    background: #218838;
+    transform: scale(1.02);
+}
+
+.btn-pagar:active {
+    transform: scale(0.98);
+}
+
+.btn-cancelar {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #888;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.btn-cancelar:hover {
+    color: #fff;
+    text-decoration: underline;
+}

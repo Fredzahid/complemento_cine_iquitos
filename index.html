@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Multicine Iquitos - Compra de Entradas</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <header>
+        <h1>Multicine Complemento</h1>
+    </header>
+
+    <main>
+        <section id="cartelera">
+            <h2>En Cartelera</h2>
+            <div id="peliculas-container" class="grid">
+                </div>
+        </section>
+
+        <section id="confiteria">
+            <h2>Snacks y Bebidas</h2>
+            <div id="snacks-container" class="grid">
+                </div>
+        </section>
+    </main>
+
+        <div id="modal-horarios" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2 id="modal-titulo">Horarios</h2>
+            <p id="modal-sinopsis" style="color: #bbb; margin-bottom: 20px;"></p>
+            <div id="horarios-lista" class="grid-horarios">
+                </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

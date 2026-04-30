@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multicine Iquitos | Resumen de Compra</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), 
+                        url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') !important;
+            background-size: cover !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .resumen-container {
+            max-width: 480px;
+            width: 90%;
+            background: rgba(30, 30, 30, 0.95);
+            padding: 35px;
+            border-radius: 25px;
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+        }
+
+        .seccion-titulo {
+            color: #e50914;
+            font-size: 0.85rem;
+            font-weight: 800;
+            margin: 25px 0 12px 0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .seccion-titulo::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(229, 9, 20, 0.3);
+            margin-left: 10px;
+        }
+
+        .detalle-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .detalle-item .label {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .detalle-item .valor {
+            font-weight: 600;
+            color: #fff;
+            text-align: right;
+        }
+
+        /* Estilo del Contenedor QR */
+        #contenedor-qr {
+            display: none;
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 25px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #img-qr {
+            width: 200px;
+            height: 200px;
+        }
+
+        .btn-accion {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-qr { background: #e50914; color: white; box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4); }
+        .btn-volver { background: transparent; color: #aaa; border: 1px solid #444; margin-top: 15px; }
+        
+        .btn-qr:hover { background: #f40612; transform: translateY(-2px); }
+        .btn-volver:hover { color: #fff; border-color: #fff; }
+
+        .total-highlight {
+            background: rgba(229, 9, 20, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 1px dashed rgba(229, 9, 20, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="resumen-container">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="background: #28a745; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                <span style="font-size: 20px;">✔</span>
+            </div>
+            <h2 style="margin: 0; font-size: 1.6rem;">¡Compra Confirmada!</h2>
+        </div>
+
+        <div class="seccion-titulo">Establecimiento</div>
+        <div class="detalle-item">
+            <span class="label">Local:</span>
+            <span class="valor">Multicine Iquitos</span>
+        </div>
+
+        <div class="seccion-titulo">Detalles de la Función</div>
+        <div class="detalle-item">
+            <span class="label">Película:</span>
+            <span class="valor" id="final-pelicula">Super Mario Galaxy</span>
+        </div>
+        <div class="detalle-item">
+            <span class="label">Sala y Asiento:</span>
+            <span class="valor"><span id="final-sala">2</span> | <span id="final-asiento">A1</span></span>
+        </div>
+        <div class="detalle-item">
+            <span class="label">Horario:</span>
+            <span class="valor" id="final-hora">11:18 p. m.</span>
+        </div>
+
+        <div class="seccion-titulo">Resumen de Pago</div>
+        <div class="detalle-item">
+            <span class="label">Método de Pago:</span>
+            <span class="valor" id="final-metodo" style="color: #28a745;">Yape / Plin</span>
+        </div>
+        <div class="detalle-item">
+            <span class="label">Entrada:</span>
+            <span class="valor">S/ 15.00</span>
+        </div>
+        <div class="detalle-item">
+            <span class="label">Snacks:</span>
+            <span class="valor" id="final-snacks">No comprados</span>
+        </div>
+
+        <div class="total-highlight">
+            <div class="detalle-item" style="margin-bottom: 0;">
+                <span class="label" style="color: #fff; font-weight: bold;">TOTAL PAGADO:</span>
+                <span class="valor" id="final-total" style="font-size: 1.3rem; color: #e50914;">S/ 15.00</span>
+            </div>
+        </div>
+
+        <!-- Botón Generar QR -->
+        <button class="btn-accion btn-qr" id="btnGenerarQR" onclick="mostrarQR()">GENERAR QR DE COMPRA</button>
+
+        <!-- Zona del QR -->
+        <div id="contenedor-qr">
+            <img id="img-qr" src="" alt="QR Ticket">
+            <p id="codigo-ticket" style="color: #333; font-family: monospace; font-weight: bold; margin-top: 10px;"></p>
+            <p style="color: #888; font-size: 0.75rem;">Escanea este código en la entrada</p>
+        </div>
+
+        <button class="btn-accion btn-volver" onclick="window.location.href='index.html'">Volver a la Cartelera</button>
+    </div>
+
+    <script>
+        const datos = JSON.parse(localStorage.getItem('ticketFinal'));
+        
+        if(datos) {
+            document.getElementById('final-pelicula').innerText = datos.pelicula;
+            document.getElementById('final-sala').innerText = datos.sala;
+            document.getElementById('final-asiento').innerText = datos.asiento;
+            document.getElementById('final-hora').innerText = datos.hora;
+            document.getElementById('final-metodo').innerText = datos.pago;
+            document.getElementById('final-total').innerText = datos.total;
+            
+            if(datos.snacks) {
+                document.getElementById('final-snacks').innerText = datos.snacks;
+            }
+        }
+
+        function mostrarQR() {
+            const btn = document.getElementById('btnGenerarQR');
+            const contenedor = document.getElementById('contenedor-qr');
+            const imgQr = document.getElementById('img-qr');
+            const idTicket = "TKT-" + Math.floor(Math.random() * 899999 + 100000);
+            
+            const qrData = `Ticket:${idTicket}|Peli:${datos.pelicula}|Local:Multicine Iquitos`;
+            imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrData)}`;
+            
+            document.getElementById('codigo-ticket').innerText = idTicket;
+            
+            btn.style.display = 'none';
+            contenedor.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
